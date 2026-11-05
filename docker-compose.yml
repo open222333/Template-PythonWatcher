@@ -1,0 +1,21 @@
+services:
+  watcher:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+    image: python-watcher:latest
+    restart: unless-stopped
+    env_file:
+      - .env
+    volumes:
+      - ./conf:/app/conf:ro
+      - ./logs:/app/logs
+      - ./data:/app/data
+      # 監控主機磁碟時，掛載主機根目錄（唯讀）並把 [check:root_disk] path 改為 /host
+      # - /:/host:ro
+    healthcheck:
+      test: ["CMD", "python", "-m", "src", "healthcheck"]
+      interval: 60s
+      timeout: 10s
+      retries: 3
+      start_period: 30s

@@ -1,0 +1,58 @@
+[LOG]
+; 設定紀錄log等級 DEBUG,INFO,WARNING,ERROR,CRITICAL 預設 INFO
+; 也可用環境變數 LOG_LEVEL 覆寫
+; LOG_LEVEL=INFO
+
+[WATCHER]
+; 通知標題顯示的名稱（例如主機名）
+WATCHER_NAME=watcher
+; 檢查間隔（秒）
+INTERVAL=60
+; 持續異常時，重複提醒間隔（秒）
+REMIND_INTERVAL=1800
+; 狀態檔與 heartbeat（相對專案根目錄）
+STATE_FILE=data/state.json
+HEARTBEAT_FILE=data/heartbeat
+
+[NOTIFY]
+; 通知管道，逗號分隔：console,telegram,mail
+NOTIFY_CHANNELS=console
+
+[TELEGRAM]
+; Token 請用環境變數 TELEGRAM_BOT_TOKEN 提供，不要寫在這裡
+TELEGRAM_CHAT_ID=
+
+[MAIL]
+SMTP_HOST=
+SMTP_PORT=587
+; true = SMTP over SSL（465）；false = STARTTLS（587）
+SMTP_SSL=false
+SMTP_USER=
+; 密碼請用環境變數 SMTP_PASSWORD 提供
+MAIL_FROM=
+; 多個收件人用逗號分隔
+MAIL_TO=
+
+; ── 檢查項目：每個 [check:<名稱>] 一項 ──
+; 共通：type = http / tcp / disk，enabled = true / false
+
+[check:example_http]
+type=http
+url=https://example.com
+expect_status=200
+timeout=10
+warn_ms=1000
+crit_ms=3000
+
+[check:root_disk]
+type=disk
+path=/
+warn_percent=80
+crit_percent=90
+
+[check:mysql_port]
+type=tcp
+host=127.0.0.1
+port=3306
+timeout=5
+enabled=false
